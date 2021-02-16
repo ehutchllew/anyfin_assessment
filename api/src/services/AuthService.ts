@@ -25,13 +25,20 @@ export class AuthService extends AbstractService<IAuthRepo> {
             }
 
             const user = await this.repository.findUser({ username });
-            const isMatch = password === user.password;
-            if (!user || !isMatch) {
+            if (!user) {
                 throw {
                     message: "Unable to Login",
                     name: SERVICE_ERRORS.FAILED_LOGIN,
                 };
             }
+            const isMatch = password === user.password;
+            if (!isMatch) {
+                throw {
+                    message: "Unable to Login",
+                    name: SERVICE_ERRORS.FAILED_LOGIN,
+                };
+            }
+
             const token = jwt.sign(
                 { username: user.username },
                 process.env.JWT_SECRET_KEY
