@@ -29,7 +29,7 @@ export async function baseService(req: any, options: any) {
 
         url.search = searchParams.toString();
     }
-
+    console.log(url);
     const rawResponse = await fetch(url.toString(), fetchInit);
 
     const parsedResponse = await rawResponse.json();

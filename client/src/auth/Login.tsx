@@ -1,9 +1,10 @@
 import React from 'react';
+import { loginService } from '../services/loginService';
 
 export const Login = () => {
 
     function onSignInPressed(e: any){
-        e.preventDefault();
+        loginService({username: "", password: ""})
     }
 
     return(
