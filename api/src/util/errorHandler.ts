@@ -12,6 +12,7 @@ export enum SERVICE_ERRORS {
     CAST = "CastError",
     DOCUMENT_NOT_FOUND = "DocumentNotFoundError",
     FAILED_LOGIN = "FailedLogin",
+    INVALID_TOKEN = "JsonWebTokenError",
     LIMIT_FILE_SIZE = "LimitFileSize",
     MALFORMED = "MalformedBody",
     PARALLEL_SAVE = "ParallelSaveError",
@@ -39,6 +40,7 @@ export function errorHandler(err: Error, res?: Response): IError {
             errorMap.status = 404;
             break;
         case SERVICE_ERRORS.FAILED_LOGIN:
+        case SERVICE_ERRORS.INVALID_TOKEN:
             errorMap.status = 401;
             break;
         case SERVICE_ERRORS.LIMIT_FILE_SIZE:

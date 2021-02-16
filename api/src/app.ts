@@ -1,6 +1,7 @@
-import express, { Application, Handler } from "express";
+import express, { Application } from "express";
 import { AuthController } from "./controllers/AuthController";
-import { MockAuthRepo } from "./data/MockAuthRepo";
+import { MockAuthRepoSingleton } from "./data/MockAuthRepo";
+import { authMiddleware } from "./middleware/auth.middleware";
 import { AuthService } from "./services/AuthService";
 
 export class AppConfig {
@@ -27,9 +28,8 @@ export class AppConfig {
         const authController = new AuthController(
             this.ExpressRef.Router(),
             // TODO pass parameterized repository to dynamically fetch repo.
-            new AuthService(new MockAuthRepo()),
-            // TODO FIX
-            {} as Handler
+            new AuthService(MockAuthRepoSingleton),
+            authMiddleware
         );
         // const usersRouter = new UsersRouter(
         //     this.ExpressRef.Router(),

@@ -14,14 +14,14 @@ export class AuthController extends AbstractController<AuthService> {
 
     protected init(router: Router): void {
         this.login(router);
-        // this.secretPath(router);
+        this.secretPath(router);
     }
 
     protected login(router: Router): void {
         router.post("/", this.service.loginUser);
     }
 
-    // protected secretPath(router: Router): void {
-    //     router.get("/secret", this.authMiddleware, this.service.secret);
-    // }
+    protected secretPath(router: Router): void {
+        router.get("/secret", this.authMiddleware, this.service.secret);
+    }
 }

@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import jwt from "jsonwebtoken";
 import { IAuthRepo } from "../data/IAuthRepo";
 import { UserModel } from "../models/User.model";
 import { errorHandler, IError, SERVICE_ERRORS } from "../util/errorHandler";
@@ -18,7 +19,6 @@ export class AuthService extends AbstractService<IAuthRepo> {
         >
     ) {
         try {
-            console.log(req.body);
             const { password, username } = req.body;
             if (!password || !username) {
                 throw { name: SERVICE_ERRORS.MALFORMED };
@@ -32,8 +32,12 @@ export class AuthService extends AbstractService<IAuthRepo> {
                     name: SERVICE_ERRORS.FAILED_LOGIN,
                 };
             }
-
-            const tokenizedUser = { ...user, token: "" };
+            const token = jwt.sign(
+                { username: user.username },
+                process.env.JWT_SECRET_KEY
+            );
+            const tokenizedUser = { ...user, token };
+            this.repository.saveUser(tokenizedUser);
             delete tokenizedUser.password;
 
             res.send(tokenizedUser);
@@ -45,7 +49,7 @@ export class AuthService extends AbstractService<IAuthRepo> {
     public secret(req: Request, res: Response) {
         try {
             console.log("got to secret");
-            res.send("OK");
+            res.send("This is a private club.");
         } catch (e) {
             errorHandler(e, res);
         }
