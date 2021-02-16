@@ -17,25 +17,12 @@ export class AppConfig {
     }
 
     protected configureRoutes(app: Application): void {
-        // const entriesRouter = new EntriesRouter(
-        //     this.ExpressRef.Router(),
-        //     new EntriesHandler(
-        //         db.collection(COLLECTION_TYPES.ENTRIES),
-        //         entriesUtil
-        //     ),
-        //     authMiddleware
-        // );
         const authController = new AuthController(
             this.ExpressRef.Router(),
             // TODO pass parameterized repository to dynamically fetch repo.
             new AuthService(MockAuthRepoSingleton),
             authMiddleware
         );
-        // const usersRouter = new UsersRouter(
-        //     this.ExpressRef.Router(),
-        //     new UsersHandler(db.collection(COLLECTION_TYPES.USERS)),
-        //     authMiddleware
-        // );
 
         app.use("/login", authController.router);
     }
