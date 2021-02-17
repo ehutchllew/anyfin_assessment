@@ -15,6 +15,13 @@ export class CountryService extends AbstractService<ICountryRepo> {
         res: Response<CountryModel[] | IError>
     ) {
         try {
+            console.log("QUERY: \n", req.query);
+            console.log("PARAM: \n", req.params);
+            res.send(
+                await this.repository.getCountriesByName(
+                    req.query["filter"] as string
+                )
+            );
         } catch (e) {
             errorHandler(e, res);
         }

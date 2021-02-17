@@ -17,6 +17,6 @@ export class CountryController extends AbstractController<CountryService> {
     }
 
     protected getCountriesByName(router: Router): void {
-        router.post("/", this.service.getCountriesByName);
+        router.get("/", this.service.getCountriesByName);
     }
 }
