@@ -15,12 +15,14 @@ export class CountryService extends AbstractService<ICountryRepo> {
         res: Response<CountryModel[] | IError>
     ) {
         try {
-            console.log("QUERY: \n", req.query);
-            console.log("PARAM: \n", req.params);
+            const parsedFilter = JSON.parse(
+                Buffer.from(req.query["filter"] as string, "base64").toString()
+            );
+            if (!parsedFilter) {
+                throw { name: SERVICE_ERRORS.MALFORMED };
+            }
             res.send(
-                await this.repository.getCountriesByName(
-                    req.query["filter"] as string
-                )
+                await this.repository.getCountriesByName(parsedFilter["name"])
             );
         } catch (e) {
             errorHandler(e, res);
