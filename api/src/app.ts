@@ -1,4 +1,5 @@
 import express, { Application } from "express";
+import cookieParser from "cookie-parser";
 import { AuthController } from "./controllers/AuthController";
 import { MockAuthRepoSingleton } from "./data/MockAuthRepo";
 import { authMiddleware } from "./middleware/auth.middleware";
@@ -43,7 +44,7 @@ export class AppConfig {
             next();
         });
         app.use(express.json());
-
+        app.use(cookieParser());
         app.disable("x-powered-by");
 
         this.configureRoutes(app);

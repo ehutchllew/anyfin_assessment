@@ -15,16 +15,31 @@ export class AuthService extends AbstractService<IAuthRepo> {
     public async loginUser(
         req: Request<any, any, Pick<UserModel, "password" | "username">>,
         res: Response<
-            (Omit<UserModel, "password"> & { token: string }) | IError
+            (Omit<UserModel, "password"> & { token?: string }) | IError
         >
     ) {
         try {
+            const reqCookieToken = req.cookies["token"];
+            if (reqCookieToken) {
+                const token = jwt.verify(
+                    req.cookies["token"],
+                    process.env.JWT_SECRET_KEY
+                );
+                const user = await this.repository.findUser({
+                    username: token.username,
+                });
+
+                res.send(this.to_json(user, ["password"]));
+                return;
+            }
             const { password, username } = req.body;
+            console.log(password, username);
             if (!password || !username) {
                 throw { name: SERVICE_ERRORS.MALFORMED };
             }
 
             const user = await this.repository.findUser({ username });
+            console.log("USER: ", user);
             if (!user) {
                 throw {
                     message: "Unable to Login",
@@ -32,6 +47,7 @@ export class AuthService extends AbstractService<IAuthRepo> {
                 };
             }
             const isMatch = password === user.password;
+            console.log(isMatch, password, user.password);
             if (!isMatch) {
                 throw {
                     message: "Unable to Login",
@@ -45,9 +61,9 @@ export class AuthService extends AbstractService<IAuthRepo> {
             );
             const tokenizedUser = { ...user, token };
             this.repository.saveUser(tokenizedUser);
-            delete tokenizedUser.password;
 
-            res.send(tokenizedUser);
+            res.cookie("token", token);
+            res.send(this.to_json(tokenizedUser, ["password"]));
         } catch (e) {
             errorHandler(e, res);
         }

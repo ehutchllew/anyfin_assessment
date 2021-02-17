@@ -13,6 +13,7 @@
         "watch": "nodemon -e ts -x yarn tsn -r dotenv/config index.ts dotenv_config_path=.env"
     },
     "dependencies": {
+        "cookie-parser": "^1.4.5",
         "dotenv": "^8.2.0",
         "express": "^4.17.1",
         "jsonwebtoken": "^8.5.1"
