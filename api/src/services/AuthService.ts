@@ -29,17 +29,17 @@ export class AuthService extends AbstractService<IAuthRepo> {
                     username: token.username,
                 });
 
-                res.send(this.to_json(user, ["password"]));
-                return;
+                if (user?.token == reqCookieToken) {
+                    res.send(this.to_json(user, ["password"]));
+                    return;
+                }
             }
             const { password, username } = req.body;
-            console.log(password, username);
             if (!password || !username) {
                 throw { name: SERVICE_ERRORS.MALFORMED };
             }
 
             const user = await this.repository.findUser({ username });
-            console.log("USER: ", user);
             if (!user) {
                 throw {
                     message: "Unable to Login",
@@ -47,7 +47,6 @@ export class AuthService extends AbstractService<IAuthRepo> {
                 };
             }
             const isMatch = password === user.password;
-            console.log(isMatch, password, user.password);
             if (!isMatch) {
                 throw {
                     message: "Unable to Login",

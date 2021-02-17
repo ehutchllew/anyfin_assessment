@@ -44,7 +44,7 @@ export class AppConfig {
         app.use(function (req, res, next) {
             res.header({
                 "Access-Control-Allow-Origin": "http://localhost:3000",
-                "Access-Control-Allow-Headers": "Content-Type",
+                "Access-Control-Allow-Headers": "Content-Type, Authorization",
                 "Access-Control-Allow-Method": "POST, GET, OPTIONS",
                 "Access-Control-Allow-Max-Age": "86400",
                 "Access-Control-Allow-Credentials": "true",

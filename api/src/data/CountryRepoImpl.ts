@@ -7,7 +7,6 @@ export class CountryRepoImpl implements ICountryRepo {
         const url: string = `https://restcountries.eu/rest/v2/name/${query}`;
         const restCountriesResp = await fetch(url);
         const json = await restCountriesResp.json();
-        console.log(url);
         const countryList: CountryModel[] = [];
 
         for (let i = 0; i < json.length; i++) {
@@ -32,7 +31,6 @@ export class CountryRepoImpl implements ICountryRepo {
                     exchangeRate:
                         fixerJson.rates["SEK"] / fixerJson.rates[currency.code],
                 };
-                console.log(countryCurrency);
 
                 countryModel.currencies.push(countryCurrency);
             }

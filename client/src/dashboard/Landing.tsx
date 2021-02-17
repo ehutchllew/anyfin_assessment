@@ -38,12 +38,12 @@ export const Landing = () => {
 
             <section className="mt-10">
                 {countries.map((country: any, i) => (
-                    <>
+                    <div key={country.fullName}>
                         <CountryCell key={country.fullName} country={country} />
                         {i < countries.length - 1 && (
                             <div className="bg-gray-200 h-0.5" />
                         )}
-                    </>
+                    </div>
                 ))}
             </section>
         </main>

@@ -1,7 +1,6 @@
 import React from "react";
 
 interface ICountryCellProps {
-    key: any;
     country: {
         fullName: string;
         currencies: Array<{
@@ -15,9 +14,9 @@ interface ICountryCellProps {
     };
 }
 
-export const CountryCell = ({ country, key }: ICountryCellProps) => {
+export const CountryCell = ({ country }: ICountryCellProps) => {
     return (
-        <div className="mb-6 p-3 rounded" key={key}>
+        <div className="mb-6 p-3 rounded" key={country.fullName}>
             <h3 className="font-bold text">{country.fullName}</h3>
             <div className="flex flex-col my-2">
                 <p className="font-bold text text-gray-600">Population</p>
