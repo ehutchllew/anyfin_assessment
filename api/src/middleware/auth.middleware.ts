@@ -10,7 +10,7 @@ const authMiddleware = async (
 ) => {
     try {
         const token = req.header("Authorization")?.replace("Bearer ", "");
-
+        console.log("AUTH MIDDLE: \n", token);
         if (!token) {
             throw { name: SERVICE_ERRORS.INVALID_TOKEN };
         }

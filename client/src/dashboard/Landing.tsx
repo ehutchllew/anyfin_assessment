@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
+import { countryService } from "../services/countryService";
 import { CountryCell } from "./CountryCell";
 
 export const Landing = () => {
+    const [countryValue, setCountryValue] = useState("");
+    const [countries, setCountries] = useState([]);
     function onKeyPressInput(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.key === "Enter") {
-            console.log("Submitting");
+            countryService({
+                filter: { name: countryValue },
+            }).then((countries) => setCountries(countries));
         }
+    }
+
+    function onChangeCountryValue(e: any) {
+        setCountryValue(e.target.value);
     }
 
     return (
@@ -21,13 +30,21 @@ export const Landing = () => {
                         type="text"
                         id="search"
                         className="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-blue-600 transition duration-500 px-3 pb-3"
+                        value={countryValue}
+                        onChange={onChangeCountryValue}
                     />
                 </div>
             </section>
 
             <section className="mt-10">
-                <CountryCell />
-                <div className="bg-gray-200 h-0.5" />
+                {countries.map((country: any, i) => (
+                    <div key={country.fullName}>
+                        <CountryCell key={country.fullName} country={country} />
+                        {i < countries.length - 1 && (
+                            <div className="bg-gray-200 h-0.5" />
+                        )}
+                    </div>
+                ))}
             </section>
         </main>
     );

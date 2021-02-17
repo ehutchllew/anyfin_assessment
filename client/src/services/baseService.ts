@@ -1,6 +1,11 @@
 export async function baseService(req: any, options: any) {
+    const authToken = document.cookie
+        .split(";")
+        .find((cookie) => cookie.startsWith("token="))
+        ?.split("=")[1];
     const DEFAULT_HEADERS = {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
     };
     const { body, headers = DEFAULT_HEADERS, method = "GET", path = "" } = req;
     const baseUrl = "http://localhost:3001/";
@@ -16,7 +21,6 @@ export async function baseService(req: any, options: any) {
     }
 
     if (options) {
-        console.log(options);
         const searchParams = new URLSearchParams({});
         if (options.filter) {
             const hashedFilter = btoa(JSON.stringify(options.filter));
@@ -28,7 +32,6 @@ export async function baseService(req: any, options: any) {
     const rawResponse = await fetch(url.toString(), fetchInit);
 
     const parsedResponse = await rawResponse.json();
-    console.log(parsedResponse);
     if (!rawResponse.ok) {
         throw parsedResponse;
     }
