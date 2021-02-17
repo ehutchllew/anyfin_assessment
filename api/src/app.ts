@@ -4,6 +4,9 @@ import { AuthController } from "./controllers/AuthController";
 import { MockAuthRepoSingleton } from "./data/MockAuthRepo";
 import { authMiddleware } from "./middleware/auth.middleware";
 import { AuthService } from "./services/AuthService";
+import { CountryController } from "./controllers/CountryController";
+import { CountryService } from "./services/CountryService";
+import { CountryRepoImpl } from "./data/CountryRepoImpl";
 
 export class AppConfig {
     protected readonly PORT = process.env.PORT || 5000;
@@ -25,7 +28,14 @@ export class AppConfig {
             authMiddleware
         );
 
+        const countryController = new CountryController(
+            this.ExpressRef.Router(),
+            new CountryService(new CountryRepoImpl()),
+            authMiddleware
+        );
+
         app.use("/login", authController.router);
+        app.use("/country", countryController.router);
     }
 
     protected setupApp() {
