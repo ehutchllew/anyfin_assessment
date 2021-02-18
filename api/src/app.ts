@@ -10,7 +10,7 @@ import { CountryRepoImpl } from "./data/CountryRepoImpl";
 import rateLimit from "express-rate-limit";
 
 export class AppConfig {
-    protected readonly PORT = process.env.PORT || 5000;
+    protected readonly PORT = process.env.PORT || 3001;
 
     constructor(private readonly ExpressRef: typeof express) {}
     public async run() {

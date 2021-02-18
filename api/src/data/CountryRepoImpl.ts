@@ -20,7 +20,7 @@ export class CountryRepoImpl implements ICountryRepo {
             for (let j = 0; j < country.currencies.length; j++) {
                 const currency = country.currencies[j];
                 const fixerResp = await fetch(
-                    `http://data.fixer.io/api/latest?access_key=19ac58cdbee9dc060752fe0960e25739&symbols=${country.currencies[j].code} ,SEK&format=1`
+                    `http://data.fixer.io/api/latest?access_key=${process.env.FIXER_API_KEY}&symbols=${country.currencies[j].code} ,SEK&format=1`
                 );
                 const fixerJson = await fixerResp.json();
                 if (currency.name && fixerJson.rates[currency.code]) {
