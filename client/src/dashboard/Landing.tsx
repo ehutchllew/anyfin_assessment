@@ -9,7 +9,9 @@ export const Landing = () => {
         if (e.key === "Enter") {
             countryService({
                 filter: { name: countryValue },
-            }).then((countries) => setCountries(countries));
+            })
+                .then((countries) => setCountries(countries))
+                .catch((e) => console.warn(e));
         }
     }
 

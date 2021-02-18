@@ -59,7 +59,7 @@ export class AppConfig {
         app.use(
             rateLimit({
                 windowMs: 60 * 1000,
-                max: 5,
+                max: 30,
             })
         );
         app.disable("x-powered-by");
