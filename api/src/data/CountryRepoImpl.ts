@@ -23,16 +23,19 @@ export class CountryRepoImpl implements ICountryRepo {
                     `http://data.fixer.io/api/latest?access_key=19ac58cdbee9dc060752fe0960e25739&symbols=${country.currencies[j].code} ,SEK&format=1`
                 );
                 const fixerJson = await fixerResp.json();
-                const countryCurrency: ICountryCurrencies = {
-                    code: currency.code,
-                    name: currency.name,
-                    symbol: currency.symbol,
-                    exchangeCode: "SEK",
-                    exchangeRate:
-                        fixerJson.rates["SEK"] / fixerJson.rates[currency.code],
-                };
+                if (currency.name && fixerJson.rates[currency.code]) {
+                    const countryCurrency: ICountryCurrencies = {
+                        code: currency.code,
+                        name: currency.name,
+                        symbol: currency.symbol,
+                        exchangeCode: "SEK",
+                        exchangeRate:
+                            fixerJson.rates["SEK"] /
+                            fixerJson.rates[currency.code],
+                    };
 
-                countryModel.currencies.push(countryCurrency);
+                    countryModel.currencies.push(countryCurrency);
+                }
             }
             countryList.push(countryModel);
         }
